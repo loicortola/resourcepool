@@ -1,0 +1,42 @@
+<div ng-controller="MainCtrl">
+    <ng-include src="'../header.html'"></ng-include>
+    { {'label.hello.world' | i18n} }
+    <br/>
+    {{'label.hello.world' | i18n}}
+    <br/>
+    { {'label.users.connected' | i18n:1} }
+    <br/>
+    {{'label.users.connected' | i18n:1}}
+    <br/>
+    { {'label.users.connected' | i18n:12} }
+    <br/>
+    {{'label.users.connected' | i18n:12}}
+    <br/>
+    { {'label.users.connected' | i18n:0} }
+    <br/>
+    {{'label.users.connected' | i18n:0}}
+    <br/>
+    { {'message.story.beginning' | i18n:{"firstCharacter":"John", "secondCharacter":"Paul", "thirdCharacter":"Matthew"} } }
+    <br/>
+    {{'message.story.beginning' | i18n:{"firstCharacter":"John", "secondCharacter":"Paul", "thirdCharacter":"Matthew"} }}
+    <br/>
+    { { 'message.story.end' | i18n:"John":"Paul":"Matthew" } }
+    <br/>
+    {{'message.story.end' | i18n:'John':'Paul':'Matthew' }}
+    <br/>
+    { {'message.feedback' | i18n:true } }
+    <br/>
+    {{'message.feedback' | i18n:true }}
+    <br/>
+    { {'message.feedback' | i18n:false } }
+    <br/>
+    {{'message.feedback' | i18n:false }}
+    <br/>
+    {{'message.with.html' | i18n }}
+    <br/>
+    <span ng-bind-html="'message.with.html' | i18n"></span>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+</div>

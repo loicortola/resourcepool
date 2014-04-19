@@ -14,50 +14,57 @@ module.exports = function (grunt) {
 
     //Cleaning task
     clean: {
-      src: ['dist', '.tmp']
+      all: ['dist', '.tmp'],
+      tmp: ['.tmp'],
+      styles: ['dist/styles'],
+      scripts: ['dist/scripts'],
+      i18n: ['dist/i18n'],
+      staticContent: ['dist/**/*.html', 'dist/images/*']
     },
 
     //Copy task
     copy: {
-      //Initial folder: app to .tmp
       dist: {
-        files: [
-          // Copy all app/ files to .tmp/ excepts sass files and scripts
-          {
-            expand: true,
-            cwd: "app",
-            src: ['**', '!styles/sass/**', '!scripts/**/*.js'],
-            dest: ".tmp"
-          }
-        ]
+        expand: true,
+        cwd: "app",
+        src: ['**', '!styles/sass/**', 'scripts/**/*.js', '**/*.html', 'images/*'],
+        dest: "dist"
       },
-      //Final folder: .tmp to dist
-      finalDist: {
-        files: [
-          // Copy all .tmp/ files to dist/
-          {
-            expand: true,
-            cwd: ".tmp",
-            src: '**',
-            dest: "dist"
-          }
-        ]
+      assets: {
+        expand: true,
+        cwd: "bower_components",
+        src: '**',
+        dest: "dist/bower_components"
       }
     },
 
     //SCSS Compile task
     sass: {
-      dist: {
-        files: [
-          // Put compiled css in .tmp/styles
-          {
-            expand: true,
-            cwd: "app/styles/sass",
-            src: "**/*.scss",
-            dest: ".tmp/styles",
-            ext: '.css'
-          }
-        ]
+      files: // Put compiled css in .tmp/styles
+      {
+        expand: true,
+        cwd: "app/styles/sass",
+        src: "**/*.scss",
+        dest: ".tmp/styles",
+        ext: '.css'
+      }
+    },
+
+    //CSS Minify task
+    cssmin: {
+      files: // Minify css to dist/ destination
+      {
+        expand: true,
+        cwd: ".tmp/styles",
+        src: "**/*.css",
+        dest: "dist/styles"
+      }
+    },
+
+    //JSON Minify task
+    'json-minify': {
+      build: {
+        files: 'dist/i18n/**/*.json'
       }
     },
 
@@ -71,37 +78,35 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'app',
         src: ['scripts/**/*.js'],
-        dest: '.tmp',
-        ext: '.js'
+        dest: 'dist'
       }
     },
 
-
     //Add revision prefix
-    rev: {
+    filerev: {
       options: {
+        encoding: 'utf8',
         algorithm: 'md5',
-        length: 8
+        length: 8,
+        keepOriginalFiles: false
       },
-      assets: {
+      files: {
         expand: true,
-        // Copy form .tmp/ to .tmp/ (source files are deleted)
-        cwd: '.tmp',
-        dest: '.tmp',
+        cwd: 'dist',
+        dest: 'dist',
         // Note: index.html and admin.html must not be prefixed.
-        src: ['*.html', '!{index,admin}.html', 'images/*', 'styles/*.css', 'scripts/{,controllers/}*.js', 'i18n/*.json'],
+        src: ['**/*.html', '!{index,admin}.html', 'images/*', 'scripts/{,controllers/}*.js', 'styles/*.css', 'i18n/*.json'],
         filter: 'isFile'
       }
     },
 
     //Update old files matches to new ones
     usemin: {
-      html: '.tmp/**/*.html',
-      css: '.tmp/**/*.css',
-
+      html: 'dist/**/*.html',
+      css: 'dist/**/*.css',
       // Custom matchings
-      htmlextra: '.tmp/**/*.html',
-      js: '.tmp/scripts/{,controllers/}*.js',
+      htmlextra: 'dist/**/*.html',
+      js: 'dist/scripts/{,controllers/}*.js',
       options: {
         patterns: {
           htmlextra: [
@@ -111,6 +116,17 @@ module.exports = function (grunt) {
             [/['"]([^"']+)["']/gm, 'Update the JS with the new HTML filenames']
           ]
         }
+      }
+    },
+    
+    //Bower install task
+    bowerInstall: {
+
+      target: {
+        // Files updated when running bower install
+        src: [
+          'app/**/*.html',   // .html support...
+        ]
       }
     },
 
@@ -124,14 +140,14 @@ module.exports = function (grunt) {
       livereload: {
         options: {
           open: 'localhost',
-          base: ['dist', 'app']
+          base: ['dist']
         }
       }
     },
 
     //Watch task
     watch: {
-      styles: {
+      app: {
         files: ['app/**'],
         tasks: ['default']
       },
@@ -139,9 +155,7 @@ module.exports = function (grunt) {
         options: {
           livereload: true
         },
-        files: [
-          'app/**'
-        ]
+        files: ['app/**']
       }
     }
 
@@ -150,18 +164,21 @@ module.exports = function (grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-rev');
+  grunt.loadNpmTasks('grunt-filerev');
   grunt.loadNpmTasks('grunt-usemin');
+  grunt.loadNpmTasks('grunt-json-minify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-bower-install');
 
   // Default task.
-  grunt.registerTask('default', ['clean', 'copy:dist', 'sass', 'uglify', 'rev', 'usemin', 'copy:finalDist']);
+  grunt.registerTask('default', ['clean:all', 'bowerInstall', 'copy:dist', 'sass', 'cssmin', 'json-minify', 'filerev', 'usemin', 'copy:assets', 'clean:tmp']);
 
   // Serve task.
   grunt.registerTask('serve', function () {
-    grunt.task.run(['clean', 'copy:dist', 'sass', 'uglify', 'rev', 'usemin', 'copy:finalDist', 'connect', 'watch']);
+    grunt.task.run(['default', 'connect', 'watch']);
   });
 };

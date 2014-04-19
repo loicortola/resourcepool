@@ -1,0 +1,15 @@
+{
+"label.hello.world": "Hello world!",
+"label.users.connected": {
+"one": "You currently have one (that means only {}) user connected",
+"zero": "You have no user connected",
+"default": "You have {} users connected"
+},
+"message.story.beginning": "This is the story of {firstCharacter} who called his friend {secondCharacter} to tell him if he could give {thirdCharacter} a ride to the airport. Problem is, {secondCharacter}'s phone was on voicemail, and {firstCharacter} did not have a car.",
+"message.story.end": "So {1} told {3} that he would have to drive there by himself, and apologized on behalf of {2}",
+"message.feedback": {
+"true": "We are glad you liked the story",
+"false": "So sorry to hear you did not like the story!"
+},
+  "message.with.html": "I <b>LOVE</b> \"rock @ roll\" so <i>(put the rest here...)</i>"
+}
