@@ -9,6 +9,7 @@ import java.util.UUID;
 /**
  * Created by ydemarti on 23/04/2014.
  */
+@CacheNamespaceRef(PostMapper.class)
 public interface AuthorMapper {
 
     String SELECT_AUTHOR = "SELECT * FROM author WHERE uuid = #{uuid}";
@@ -21,7 +22,7 @@ public interface AuthorMapper {
     Set<Author> getAuthorByUUID(@Param("uuid") UUID uuid);
 
     @Insert(INSERT_AUTHOR)
-    @Options(flushCache = true)
+    @Options(flushCache = true, keyProperty = "uuid")
     void saveOrUpdate(Author tag);
 
     @Delete(DELETE_AUTHOR)

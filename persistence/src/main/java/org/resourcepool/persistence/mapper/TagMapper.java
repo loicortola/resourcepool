@@ -9,6 +9,7 @@ import java.util.UUID;
 /**
  * Created by ydemarti on 22/04/2014.
  */
+@CacheNamespaceRef(PostMapper.class)
 public interface TagMapper {
 
     String SELECT_TAGS_BY_POST = "SELECT t.* FROM tag t JOIN post_tag pt ON t.uuid = pt.tag_uuid WHERE pt.post_uuid = #{uuid}";
@@ -21,7 +22,7 @@ public interface TagMapper {
     Set<Tag> getTagsByPostUUID(@Param("uuid") UUID uuid);
 
     @Insert(INSERT_TAG)
-    @Options(flushCache = true)
+    @Options(flushCache = true, keyProperty = "uuid")
     void saveOrUpdate(Tag tag);
 
     @Delete(DELETE_TAG)

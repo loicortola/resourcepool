@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Builder;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @Getter @Setter
-public class Tag {
+public class Tag implements Serializable {
 
     private final UUID uuid;
 

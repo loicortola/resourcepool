@@ -9,6 +9,7 @@ import java.util.UUID;
 /**
  * Created by yoann on 18/04/14.
  */
+@CacheNamespace(implementation=org.mybatis.caches.ehcache.EhcacheCache.class, readWrite = false)
 public interface PostMapper {
 
     String INSERT_POST = "INSERT INTO post (uuid, title, slug, created_at, content, author) VALUES(" +
@@ -25,11 +26,11 @@ public interface PostMapper {
     Post getPostBySlug(String slug);
 
     @Insert(INSERT_POST)
-    @Options(flushCache = true)
+    @Options(flushCache = true, keyProperty = "uuid")
     void create(Post post);
 
     @Update(UPDATE_POST)
-    @Options(flushCache = true)
+    @Options(flushCache = true, keyProperty = "uuid")
     void update(Post post);
 
     @Delete(DELETE_POST)
@@ -41,7 +42,7 @@ public interface PostMapper {
     void linkTag(@Param("post") Post post, @Param("tag") Tag tag);
 
     @Delete(DELETE_TAGS)
-    @Options(flushCache = true)
+    @Options(flushCache = true, keyProperty = "uuid")
     void deleteTags(@Param("post") Post post);
 
 }
