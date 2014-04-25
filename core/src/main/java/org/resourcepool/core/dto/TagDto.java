@@ -3,13 +3,15 @@ package org.resourcepool.core.dto;
 import lombok.Getter;
 import org.resourcepool.core.domain.Tag;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by ydemarti on 22/04/2014.
  */
 @Getter
-public class TagDTO {
+public class TagDto {
 
     private final UUID uuid;
 
@@ -17,7 +19,11 @@ public class TagDTO {
 
     private String slug;
 
-    public TagDTO(Tag tag) {
+    public TagDto() {
+        uuid = null;
+    }
+    
+    private TagDto(Tag tag) {
         this.uuid = tag.getUuid();
         this.tag = tag.getTag();
         this.slug = tag.getSlug();
@@ -30,4 +36,11 @@ public class TagDTO {
                 .build();
     }
 
+    public static TagDto fromTag(Tag tag) {
+        return new TagDto(tag);
+    }
+    
+    public static Set<TagDto> fromTagSet(Set<Tag> tags) {
+        return tags.stream().map(TagDto::fromTag).collect(Collectors.toSet());
+    }
 }

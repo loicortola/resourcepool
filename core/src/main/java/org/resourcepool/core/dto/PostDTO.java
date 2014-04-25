@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Created by ydemarti on 22/04/2014.
  */
 @Getter
-public class PostDTO {
+public class PostDto {
 
     private final UUID uuid;
 
@@ -24,18 +24,22 @@ public class PostDTO {
 
     private String content;
 
-    private AuthorDTO author;
+    private AuthorDto author;
 
-    private Set<TagDTO> tags;
+    private Set<TagDto> tags;
 
-    public PostDTO(Post post) {
+    public PostDto() {
+        uuid = null;
+    }
+    
+    private PostDto(Post post) {
         uuid = post.getUuid();
         title = post.getTitle();
         slug = post.getSlug();
         createdAt = post.getCreatedAt().toString();
         content = post.getContent();
-        author = new AuthorDTO(post.getAuthor());
-        tags = post.getTags().stream().map(TagDTO::new).collect(Collectors.toSet());
+        author = AuthorDto.fromAuthor(post.getAuthor());
+        tags = TagDto.fromTagSet(post.getTags());
     }
 
     public Post toPost() {
@@ -45,8 +49,15 @@ public class PostDTO {
                 .createdAt(LocalDateTime.parse(createdAt))
                 .content(content)
                 .author(author.toAuthor())
-                .tags(tags.stream().map(TagDTO::toTag).collect(Collectors.toSet()))
+                .tags(tags.stream().map(TagDto::toTag).collect(Collectors.toSet()))
                 .build();
     }
+    
+    public static PostDto fromPost(Post post) {
+        return new PostDto(post);
+    }
 
+    public static Set<PostDto> fromPostSet(Set<Post> posts) {
+        return posts.stream().map(PostDto::fromPost).collect(Collectors.toSet());
+    }
 }

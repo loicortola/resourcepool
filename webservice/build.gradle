@@ -3,6 +3,6 @@ apply plugin: 'spring-boot'
 
 dependencies {
     compile project(":service")
-    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+    //compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 }

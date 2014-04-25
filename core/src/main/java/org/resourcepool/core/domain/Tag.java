@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter @Setter
 public class Tag implements Serializable {
 
-    private final UUID uuid;
+    private UUID uuid;
 
     private String tag;
 

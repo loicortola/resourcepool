@@ -21,7 +21,7 @@
         </association>
     </resultMap>
 
-    <select id="getPostBySlug" parameterType="String" resultType="org.resourcepool.core.domain.Post" resultMap="authoredPost">
+    <select id="getBySlug" parameterType="String" resultType="org.resourcepool.core.domain.Post" resultMap="authoredPost">
         SELECT * FROM post p JOIN author a ON author = a.uuid WHERE slug = #{slug}
     </select>
 </mapper>

@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.resourcepool.core.domain.Post;
 import org.resourcepool.core.domain.Tag;
 
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -12,9 +13,10 @@ import java.util.UUID;
 @CacheNamespace(implementation=org.mybatis.caches.ehcache.EhcacheCache.class, readWrite = false)
 public interface PostMapper {
 
-    String INSERT_POST = "INSERT INTO post (uuid, title, slug, created_at, content, author) VALUES(" +
-            "#{uuid}, #{title}, #{slug}, #{createdAt}, #{content}, #{author.uuid})";
-
+    String SELECT_POSTS = "SELECT uuid, title, slug, content FROM post";
+    
+    String SELECT_POST = "SELECT uuid, title, slug, content FROM post WHERE uuid = #{uuid}";
+    
     String UPDATE_POST = "UPDATE post SET title = #{title}, slug = #{slug}, content = #{content} WHERE uuid = #{uuid}";
 
     String DELETE_POST = "DELETE FROM post WHERE uuid = #{uuid}";
@@ -23,15 +25,17 @@ public interface PostMapper {
 
     String DELETE_TAGS = "DELETE FROM post_tag WHERE post_uuid = #{post.uuid}";
 
-    Post getPostBySlug(String slug);
-
-    @Insert(INSERT_POST)
-    @Options(flushCache = true, keyProperty = "uuid")
-    void create(Post post);
+    @Select(SELECT_POSTS)
+    Set<Post> getAll();
+    
+    @Select(SELECT_POST)
+    Post get(@Param("uuid") UUID uuid);
+    
+    Post getBySlug(@Param("slug") String slug);
 
     @Update(UPDATE_POST)
     @Options(flushCache = true, keyProperty = "uuid")
-    void update(Post post);
+    void save(Post post);
 
     @Delete(DELETE_POST)
     @Options(flushCache = true)

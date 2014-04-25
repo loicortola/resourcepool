@@ -18,7 +18,7 @@ import java.util.UUID;
 @Getter @Setter
 public class Post implements Serializable {
 
-    private final UUID uuid;
+    private UUID uuid;
 
     private String title;
 

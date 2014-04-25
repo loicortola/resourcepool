@@ -12,18 +12,24 @@ import java.util.UUID;
 @CacheNamespaceRef(PostMapper.class)
 public interface AuthorMapper {
 
+    String SELECT_AUTHORS = "SELECT * FROM author";
+    
     String SELECT_AUTHOR = "SELECT * FROM author WHERE uuid = #{uuid}";
 
-    String INSERT_AUTHOR = "REPLACE INTO author (uuid, surname, first_name, last_name) VALUES (#{uuid}, #{surname}, #{firstName}, #{lastName})";
+    String UPDATE_AUTHOR = "REPLACE INTO author (uuid, surname, first_name, last_name) VALUES (#{uuid}, #{surname}, #{firstName}, #{lastName})";
+    
+    String DELETE_AUTHOR = "DELETE FROM author WHERE uuid = #{uuid}";
 
-    String DELETE_AUTHOR = "DELETE FROM tag WHERE uuid = #{uuid}";
-
+    @Select(SELECT_AUTHORS)
+    Set<Author> getAll();
+    
     @Select(SELECT_AUTHOR)
-    Set<Author> getAuthorByUUID(@Param("uuid") UUID uuid);
+    Author get(@Param("uuid") UUID uuid);
 
-    @Insert(INSERT_AUTHOR)
+    @Update(UPDATE_AUTHOR)
     @Options(flushCache = true, keyProperty = "uuid")
-    void saveOrUpdate(Author tag);
+    void save(Author author);
+
 
     @Delete(DELETE_AUTHOR)
     @Options(flushCache = true)

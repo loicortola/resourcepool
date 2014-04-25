@@ -12,18 +12,31 @@ import java.util.UUID;
 @CacheNamespaceRef(PostMapper.class)
 public interface TagMapper {
 
+    String SELECT_TAGS = "SELECT * FROM tag";
+    
+    String SELECT_TAG = "SELECT * FROM tag WHERE uuid = #{uuid}";
+    
     String SELECT_TAGS_BY_POST = "SELECT t.* FROM tag t JOIN post_tag pt ON t.uuid = pt.tag_uuid WHERE pt.post_uuid = #{uuid}";
 
-    String INSERT_TAG = "REPLACE INTO tag (uuid, tag, slug) VALUES (#{uuid}, #{tag}, #{slug})";
+    String INSERT_TAG = "INSERT INTO tag (uuid, tag, slug) VALUES (UUID(), #{tag}, #{slug})";
+
+    String UPDATE_TAG = "REPLACE INTO tag (uuid, tag, slug) VALUES (#{uuid}, #{tag}, #{slug})";
 
     String DELETE_TAG = "DELETE FROM tag WHERE uuid = #{uuid}";
 
+    @Select(SELECT_TAGS)
+    Set<Tag> getAll();
+    
+    @Select(SELECT_TAG)
+    Tag get(@Param("uuid") UUID uuid);
+    
     @Select(SELECT_TAGS_BY_POST)
-    Set<Tag> getTagsByPostUUID(@Param("uuid") UUID uuid);
+    Set<Tag> getByPostUUID(@Param("uuid") UUID uuid);
 
-    @Insert(INSERT_TAG)
+    @Update(UPDATE_TAG)
     @Options(flushCache = true, keyProperty = "uuid")
-    void saveOrUpdate(Tag tag);
+    void save(Tag tag);
+
 
     @Delete(DELETE_TAG)
     @Options(flushCache = true)
