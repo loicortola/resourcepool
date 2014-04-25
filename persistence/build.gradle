@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":core")
+    compile("org.mybatis:mybatis:${mybatisVersion}")
+    compile("org.mybatis:mybatis-spring:${mybatisSpringVersion}")
+    compile("org.mybatis.caches:mybatis-ehcache:${mybatisEhcacheVersion}")
+    runtime("com.jolbox:bonecp:${bonecpVersion}")
+    runtime("mysql:mysql-connector-java:${mysqlVersion}")
+}

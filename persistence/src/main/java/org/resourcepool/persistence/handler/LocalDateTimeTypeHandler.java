@@ -6,6 +6,7 @@ import org.apache.ibatis.type.TypeHandler;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 /**
@@ -42,7 +43,7 @@ public class LocalDateTimeTypeHandler implements TypeHandler<LocalDateTime> {
 
     protected Timestamp convert(LocalDateTime dateTime) {
         if (dateTime == null) return null;
-        return new Timestamp(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(dateTime);
     }
 
 }

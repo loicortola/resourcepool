@@ -1,8 +1,19 @@
+
 buildscript {
 	ext {
-		springBootVersion = '1.0.1.RELEASE'
-	}
+		springBootVersion = '1.+'
+        slf4jVersion = '1.+'
+        logbackVersion = '1.+'
+        lombokVersion = '1.+'
+        mysqlVersion = '5.+'
+        bonecpVersion = '0.+'
+        mybatisEhcacheVersion = '1.+'
+        mybatisSpringVersion = '1.+'
+        mybatisVersion = '3.+'
+        flywayVersion = '2.+'
+    }
     repositories {
+        mavenLocal()
     	mavenCentral()
     }
     dependencies {
@@ -10,24 +21,40 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse-wtp'
+    apply plugin: 'idea'
+    
+    //Project conf
+    version = '0.1.0-SNAPSHOT'
+    group = 'org.resourcepool'
 
-jar {
-    baseName = 'parent'
-    version =  '0.0.1-SNAPSHOT'
+    afterEvaluate {
+        configurations.all { conf ->
+            conf.exclude group: "commons-logging", artifacts: "commons-logging"
+        }
+    }
+
+    dependencies {
+        runtime "org.slf4j:jcl-over-slf4j:1+"
+        testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+        compile("org.projectlombok:lombok:${lombokVersion}")
+        compile("org.slf4j:slf4j-api:${slf4jVersion}")
+        runtime("ch.qos.logback:logback-classic:${logbackVersion}")
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+subprojects {
+    apply plugin: 'maven'
+    
+    sourceCompatibility = 1.8
 }
 
 task wrapper(type: Wrapper) {
