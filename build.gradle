@@ -10,7 +10,7 @@ buildscript {
         mybatisEhcacheVersion = '1.+'
         mybatisSpringVersion = '1.+'
         mybatisVersion = '3.+'
-        flywayVersion = '2.+'
+        flywayVersion = '3.+'
         jsonPathVersion = '0.9.+'
     }
     repositories {
@@ -19,7 +19,17 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.flywaydb:flyway-gradle-plugin:' + flywayVersion
+        classpath 'mysql:mysql-connector-java:' + mysqlVersion
     }
+}
+
+apply plugin: 'flyway'
+
+flyway {
+    url = 'jdbc:mysql://127.0.0.1:3306/resourcepool'
+    user = 'resourcepool'
+    password = 'password'
 }
 
 allprojects {

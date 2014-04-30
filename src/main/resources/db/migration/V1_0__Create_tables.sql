@@ -1,5 +1,3 @@
-USE resourcepool;
-
 CREATE TABLE author(
     uuid        BINARY(16)   NOT NULL PRIMARY KEY,
     surname     VARCHAR(255) NOT NULL,
