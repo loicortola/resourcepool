@@ -75,9 +75,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public boolean delete(@NotNull UUID uuid) {
-        log.debug("delete({})", uuid);
-        return postMapper.delete(uuid) > 0;
+    public boolean delete(@NotEmpty String slug) {
+        log.debug("delete({})", slug);
+        return postMapper.delete(slug) > 0;
     }
 
     private Post loadTags(Post post) {

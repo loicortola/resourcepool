@@ -51,9 +51,9 @@ public class PostController {
         return new ResponseEntity(postService.save(postDto.toPost()) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = Application.JSON_UTF_8)
-    public ResponseEntity delete(@PathVariable UUID uuid) {
-        return new ResponseEntity(postService.delete(uuid) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    @RequestMapping(value = "/{slug}", method = RequestMethod.DELETE, produces = Application.JSON_UTF_8)
+    public ResponseEntity delete(@PathVariable String slug) {
+        return new ResponseEntity(postService.delete(slug) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     private ResponseEntity<PostDto> toResponseEntityPostDto(Post post) {

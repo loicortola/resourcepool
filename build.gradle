@@ -11,6 +11,7 @@ buildscript {
         mybatisSpringVersion = '1.+'
         mybatisVersion = '3.+'
         flywayVersion = '2.+'
+        jsonPathVersion = '0.9.+'
     }
     repositories {
         mavenLocal()

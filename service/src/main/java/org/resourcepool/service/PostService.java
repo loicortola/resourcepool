@@ -21,8 +21,8 @@ public interface PostService {
 
     /**
      * Deletes the post
-     * @param uuid Uuid of the post
+     * @param slug String slug of the post
      * @return true if the post existed, false otherwise
      */
-    boolean delete(UUID uuid);
+    boolean delete(String slug);
 }

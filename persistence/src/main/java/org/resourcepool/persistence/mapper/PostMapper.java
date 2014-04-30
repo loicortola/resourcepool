@@ -22,7 +22,7 @@ public interface PostMapper {
     
     String UPDATE_POST = "UPDATE post SET title = #{title}, slug = #{slug}, created_at = #{createdAt}, content = #{content} WHERE uuid = #{uuid}";
 
-    String DELETE_POST = "DELETE FROM post WHERE uuid = #{uuid}";
+    String DELETE_POST = "DELETE FROM post WHERE slug = #{slug}";
 
     String INSERT_TAG = "REPLACE INTO post_tag VALUES (#{post.uuid}, #{tag.uuid})";
 
@@ -46,7 +46,7 @@ public interface PostMapper {
 
     @Delete(DELETE_POST)
     @Options(flushCache = true)
-    int delete(@Param("uuid") UUID uuid);
+    int delete(@Param("slug") String slug);
 
     @Insert(INSERT_TAG)
     @Options(flushCache = true)
