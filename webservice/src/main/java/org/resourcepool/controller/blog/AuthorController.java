@@ -1,8 +1,8 @@
 package org.resourcepool.controller.blog;
 
+import org.resourcepool.Application;
 import org.resourcepool.core.domain.Author;
 import org.resourcepool.core.dto.AuthorDto;
-import org.resourcepool.core.dto.PostDto;
 import org.resourcepool.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,20 +22,17 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<Set<AuthorDto>> list() {
         return new ResponseEntity<Set<AuthorDto>>(AuthorDto.fromAuthorSet(authorService.getAll()),HttpStatus.OK);
     }
     
-    @ResponseBody
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<AuthorDto> show(@PathVariable("uuid") String uuid) {
         return new ResponseEntity<AuthorDto>(AuthorDto.fromAuthor(authorService.get(UUID.fromString(uuid))),HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, produces = Application.JSON_UTF_8)
     public ResponseEntity<AuthorDto> create(AuthorDto authorDto) {
         Author author = authorDto.toAuthor();
         authorService.save(author);
@@ -44,15 +41,13 @@ public class AuthorController {
         return new ResponseEntity<AuthorDto>(AuthorDto.fromAuthor(author),HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(method = RequestMethod.POST, produces = Application.JSON_UTF_8)
     public ResponseEntity<AuthorDto> update(AuthorDto authorDto) {
         authorService.save(authorDto.toAuthor());
         return new ResponseEntity<AuthorDto>(authorDto,HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = Application.JSON_UTF_8)
     public ResponseEntity delete(@PathVariable UUID uuid) {
         authorService.delete(uuid);
         return new ResponseEntity(HttpStatus.OK);

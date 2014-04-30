@@ -30,7 +30,6 @@ public interface AuthorMapper {
     @Options(flushCache = true, keyProperty = "uuid")
     void save(Author author);
 
-
     @Delete(DELETE_AUTHOR)
     @Options(flushCache = true)
     void delete(UUID uuid);

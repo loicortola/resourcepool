@@ -18,8 +18,6 @@ public interface TagMapper {
     
     String SELECT_TAGS_BY_POST = "SELECT t.* FROM tag t JOIN post_tag pt ON t.uuid = pt.tag_uuid WHERE pt.post_uuid = #{uuid}";
 
-    String INSERT_TAG = "INSERT INTO tag (uuid, tag, slug) VALUES (UUID(), #{tag}, #{slug})";
-
     String UPDATE_TAG = "REPLACE INTO tag (uuid, tag, slug) VALUES (#{uuid}, #{tag}, #{slug})";
 
     String DELETE_TAG = "DELETE FROM tag WHERE uuid = #{uuid}";
@@ -34,9 +32,8 @@ public interface TagMapper {
     Set<Tag> getByPostUUID(@Param("uuid") UUID uuid);
 
     @Update(UPDATE_TAG)
-    @Options(flushCache = true, keyProperty = "uuid")
+    @Options(flushCache = true)
     void save(Tag tag);
-
 
     @Delete(DELETE_TAG)
     @Options(flushCache = true)

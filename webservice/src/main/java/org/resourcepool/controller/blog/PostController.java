@@ -1,5 +1,6 @@
 package org.resourcepool.controller.blog;
 
+import org.resourcepool.Application;
 import org.resourcepool.core.domain.Post;
 import org.resourcepool.core.dto.PostDto;
 import org.resourcepool.service.PostService;
@@ -21,47 +22,43 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<Set<PostDto>> list() {
         return new ResponseEntity<Set<PostDto>>(PostDto.fromPostSet(postService.getAll()),HttpStatus.OK);
     }
-    
-    @ResponseBody
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = "application/json")
+
+    @RequestMapping(value = "/uuid/{uuid}", method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<PostDto> get(@PathVariable("uuid") String uuid) {
-        return new ResponseEntity<PostDto>(PostDto.fromPost(postService.get(UUID.fromString(uuid))),HttpStatus.OK);
+        return toResponseEntityPostDto(postService.get(UUID.fromString(uuid)));
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/bySlug/{slug}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{slug}", method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<PostDto> getBySlug(@PathVariable("slug") String slug) {
-        return new ResponseEntity<PostDto>(PostDto.fromPost(postService.getBySlug(slug)),HttpStatus.OK);
+        return toResponseEntityPostDto(postService.getBySlug(slug));
     }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<PostDto> create(PostDto postDto) {
+    @RequestMapping(method = RequestMethod.POST, produces = Application.JSON_UTF_8)
+    public ResponseEntity create(@RequestBody PostDto postDto) {
         Post post = postDto.toPost();
-        postService.save(post);
-        if(post.getUuid() == null)
-            return new ResponseEntity<PostDto>(postDto,HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<PostDto>(PostDto.fromPost(post),HttpStatus.OK);
+        postService.create(post);
+        return new ResponseEntity(post.getUuid() == null ? HttpStatus.NOT_ACCEPTABLE : HttpStatus.CREATED);
     }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<PostDto> update(PostDto postDto) {
-        postService.save(postDto.toPost());
-        return new ResponseEntity<PostDto>(postDto,HttpStatus.OK);
+    @RequestMapping(value = "/{slug}", method = RequestMethod.PUT, produces = Application.JSON_UTF_8)
+    public ResponseEntity update(PostDto postDto) {
+        if (postDto.getUuid() == null)
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(postService.save(postDto.toPost()) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = Application.JSON_UTF_8)
     public ResponseEntity delete(@PathVariable UUID uuid) {
-        postService.delete(uuid);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(postService.delete(uuid) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<PostDto> toResponseEntityPostDto(Post post) {
+        if (post == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(PostDto.fromPost(post), HttpStatus.OK);
     }
 
 }

@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource("classpath:datasource.xml")
 public class Application {
 
+    public static final String JSON_UTF_8 = "application/json;charset=UTF-8";
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

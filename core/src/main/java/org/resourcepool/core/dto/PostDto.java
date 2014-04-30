@@ -31,14 +31,15 @@ public class PostDto {
     public PostDto() {
         uuid = null;
     }
-    
+
     private PostDto(Post post) {
         uuid = post.getUuid();
         title = post.getTitle();
         slug = post.getSlug();
         createdAt = post.getCreatedAt().toString();
         content = post.getContent();
-        author = AuthorDto.fromAuthor(post.getAuthor());
+        if (post.getAuthor() != null)
+            author = AuthorDto.fromAuthor(post.getAuthor());
         tags = TagDto.fromTagSet(post.getTags());
     }
 
@@ -46,7 +47,7 @@ public class PostDto {
         return Post.builder().uuid(uuid)
                 .title(title)
                 .slug(slug)
-                .createdAt(LocalDateTime.parse(createdAt))
+                .createdAt(createdAt != null ? LocalDateTime.parse(createdAt) : null)
                 .content(content)
                 .author(author.toAuthor())
                 .tags(tags.stream().map(TagDto::toTag).collect(Collectors.toSet()))

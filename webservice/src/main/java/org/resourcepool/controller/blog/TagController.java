@@ -1,5 +1,6 @@
 package org.resourcepool.controller.blog;
 
+import org.resourcepool.Application;
 import org.resourcepool.core.domain.Tag;
 import org.resourcepool.core.dto.TagDto;
 import org.resourcepool.service.TagService;
@@ -21,26 +22,22 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<Set<TagDto>> list() {
         return new ResponseEntity<Set<TagDto>>(TagDto.fromTagSet(tagService.getAll()),HttpStatus.OK);
     }
     
-    @ResponseBody
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<TagDto> get(@PathVariable("uuid") String uuid) {
         return new ResponseEntity<TagDto>(TagDto.fromTag(tagService.get(UUID.fromString(uuid))),HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/byPost/{uuid}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/byPost/{uuid}", method = RequestMethod.GET, produces = Application.JSON_UTF_8)
     public ResponseEntity<Set<TagDto>> getByPostUUID(@PathVariable("uuid") String uuid) {
         return new ResponseEntity<Set<TagDto>>(TagDto.fromTagSet(tagService.getByPostUUID(UUID.fromString(uuid))),HttpStatus.OK);
     }
     
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, produces = Application.JSON_UTF_8)
     public ResponseEntity<TagDto> create(@RequestBody TagDto tagDto) {
         Tag tag = tagDto.toTag();
         tagService.save(tag);
@@ -49,15 +46,13 @@ public class TagController {
         return new ResponseEntity<TagDto>(TagDto.fromTag(tag),HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(method = RequestMethod.POST, produces = Application.JSON_UTF_8)
     public ResponseEntity<TagDto> update(@RequestBody TagDto tagDto) {
         tagService.save(tagDto.toTag());
         return new ResponseEntity<TagDto>(tagDto,HttpStatus.OK);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "/{uuid}", method = RequestMethod.DELETE, produces = Application.JSON_UTF_8)
     public ResponseEntity delete(@PathVariable UUID uuid) {
         tagService.delete(uuid);
         return new ResponseEntity(HttpStatus.OK);

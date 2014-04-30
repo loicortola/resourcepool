@@ -19,7 +19,6 @@ public class UUIDTypeHandlerTest {
         String str = uuid.toString();
         byte[] data = handler.convert(uuid);
         UUID res = handler.convert(data);
-        System.out.println(str);
         assertEquals(str, res.toString());
     }
 
