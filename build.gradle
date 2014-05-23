@@ -18,9 +18,9 @@ buildscript {
     	mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath 'org.flywaydb:flyway-gradle-plugin:' + flywayVersion
-        classpath 'mysql:mysql-connector-java:' + mysqlVersion
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}",
+                  "org.flywaydb:flyway-gradle-plugin:${flywayVersion}",
+                  "mysql:mysql-connector-java:${mysqlVersion}"
     }
 }
 
@@ -48,10 +48,10 @@ allprojects {
     }
 
     dependencies {
-        runtime "org.slf4j:jcl-over-slf4j:1+"
-        testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-        compile("org.projectlombok:lombok:${lombokVersion}")
-        runtime("ch.qos.logback:logback-classic:${logbackVersion}")
+        compile "org.projectlombok:lombok:${lombokVersion}"
+        runtime "org.slf4j:jcl-over-slf4j:1+",
+                "ch.qos.logback:logback-classic:${logbackVersion}"
+        testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     }
 
     repositories {

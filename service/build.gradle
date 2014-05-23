@@ -1,6 +1,6 @@
 dependencies {
-    compile project(":persistence")
-    compile("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
-    compile("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
+    compile project(":persistence"),
+            "org.hibernate:hibernate-validator:${hibernateValidatorVersion}",
+            "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
     
 }

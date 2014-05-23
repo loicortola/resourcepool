@@ -2,8 +2,8 @@ apply plugin: 'spring-boot'
 
 
 dependencies {
-    compile project(":service")
-    //compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    testRuntime 'com.jayway.jsonpath:json-path-assert:' + jsonPathVersion
+    compile project(":service"),
+            "org.springframework.boot:spring-boot-starter-security:${springBootVersion}",
+            "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    testRuntime "com.jayway.jsonpath:json-path-assert:${jsonPathVersion}"
 }
